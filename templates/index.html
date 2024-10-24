@@ -3,27 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat with GPT</title>
+    <title>Chat with</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+    
     <div class="chat-container">
-        <h1>Chat with GPT</h1>
-        <div id="chat-box"></div>
-        <input type="text" id="user-input" placeholder="Type your message here..." autofocus>
-        <button onclick="sendMessage()">Send</button>
+        <aside class="sidebar">
+            <h2>Tutor Bot</h2>
+            <ul class="menu">
+                <li>New Chat</li>
+                <li>Settings</li>
+            </ul>
+        </aside>
+        <!--outer container-->
+        <div class="chat-content">
+            <!--header-->
+            <header class="header">
+                <h1>Tutor Bot Chat</h1>
+            </header>
+            <!--where the chat should happen-->
+            <div id="chat-box"></div>
+            <div class="input-container">
+                <!--user text box input-->
+                <input type="text" id="user-input" placeholder="Type your message here..." autofocus>
+                <!--send button-->
+                <button class="send-btn" onclick="sendMessage()">Send</button>
+            </div>
+        </div>
     </div>
 
     <script>
         async function sendMessage() {
-            const userInput = document.getElementById('user-input').value;
+            const userInput = document.getElementById('user-input');
+            const userMessage = document.createElement('div');
+            userMessage.className = 'user-message';
+            const botMessage = document.createElement('div');
+            botMessage.className = 'bot-message';
 
             if (userInput === '') return;
 
             // Add user message to chat box
             const chatBox = document.getElementById('chat-box');
-            chatBox.innerHTML += `<p><strong>You:</strong> ${userInput}</p>`;
-
+            userMessage.innerHTML += `<p><strong>You:</strong> ${userInput.value}</p>`;
+            chatBox.appendChild(userMessage);
+            
             // Send the user input to the backend
             const response = await fetch('/ask', {
                 method: 'POST',
@@ -35,10 +59,12 @@
             const assistantMessage = data.response;
 
             // Add GPT response to the chat box
-            chatBox.innerHTML += `<p><strong>GPT:</strong> ${assistantMessage}</p>`;
+            botMessage.innerHTML += `<p><strong>Tutor:</strong> ${assistantMessage}</p>`;
+            chatBox.appendChild(botMessage);
             
             // Clear the input field
             document.getElementById('user-input').value = '';
+            
         }
     </script>
 </body>
