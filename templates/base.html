@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}My App{% endblock %}</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <!-- Include Firebase SDKs from version 10.14.1 -->
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/ui/6.1.1/firebase-ui-auth.js"></script>
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="https://www.gstatic.com/firebasejs/ui/6.1.1/firebase-ui-auth.css"
+    />
+    <script>
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyA6zpoyx3DPFTydwFUB11drJAiyfOWRwWA",
+        authDomain: "hackathonproject-89255.firebaseapp.com",
+        projectId: "hackathonproject-89255",
+        storageBucket: "hackathonproject-89255.appspot.com",
+        messagingSenderId: "414382919249",
+        appId: "1:414382919249:web:c06b40bb5cc309288c3270",
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth(); // Use firebase.auth() to initialize auth
+
+      // Sign-out function
+      function logout() {
+        auth
+          .signOut()
+          .then(() => {
+            console.log("Firebase: User signed out.");
+            console.log("Next: Destroying server-side session.")
+            fetch("/logout", {
+              method: "GET",
+            }).then((response) => {
+              if (response.ok) {
+                console.log("Session: Logged out successfully.");
+                // Optionally, redirect or update the UI after logout
+                window.location.reload(); // Reload the page or redirect
+              } else {
+                console.error("Session: Failed to log out.");
+              }
+            });
+          })
+          .catch((error) => {
+            console.error("Sign-out error:", error);
+          });
+      }
+    </script>
+
+    {% block head %}{% endblock %}
+  </head>
+  <body>
+    {% block body %}{% endblock %}
+  </body>
+</html>
