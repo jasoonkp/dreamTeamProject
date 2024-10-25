@@ -1,14 +1,12 @@
 import os
-from flask import Flask, render_template, request,jsonify, send_from_directory
-from flask_cors import CORS
+from flask import Flask, render_template, request,jsonify
 from dotenv import load_dotenv
 from openai import OpenAI
-import firebase_admin
-from firebase_admin import credentials, auth
+from firebase_admin import credentials, auth, initialize_app
 
 # Initialize the Firebase Admin SDK
 cred = credentials.Certificate(".private/firebase.service.key.json")
-firebase_admin.initialize_app(cred)
+initialize_app(cred)
 
 # Initialize Flask app
 app = Flask(__name__)
