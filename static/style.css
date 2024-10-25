@@ -5,6 +5,15 @@
     box-sizing: border-box;
     font-family: Arial, sans-serif;
 }
+/* Centering the firebase UI */
+#firebaseui-auth-container {
+    display: flex; /* Use flexbox for centering */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    margin: auto; /* Center the container */
+    width: 40%;
+    height: 100vh; /* Make it full height to center vertically */
+}
 
 /* Full-page layout */
 .chat-container {
