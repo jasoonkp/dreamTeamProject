@@ -1,0 +1,8 @@
+# Ignore the .env file
+.env
+
+# Ignore all files in the .private directory
+.private/*
+
+# Allow the .private directory itself to be tracked
+!.private/
