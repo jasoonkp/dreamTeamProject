@@ -1,9 +1,10 @@
 import os
-from flask import Flask, redirect, render_template, request,jsonify, session, url_for
+from flask import Flask, redirect, render_template, request, jsonify, session, url_for
 from dotenv import load_dotenv
 from openai import OpenAI
 from firebase_admin import credentials, auth, initialize_app
 from functools import wraps
+
 # Initialize the Firebase Admin SDK
 cred = credentials.Certificate(".private/firebase.service.key.json")
 initialize_app(cred)
@@ -47,6 +48,11 @@ def login():
         return redirect(url_for('home'))
     return render_template("login.html")
 
+@app.route('/newchat')
+@login_required  # Ensure the user is logged in before accessing this route
+def newchat():
+    return render_template("subjects.html")  # Render the subjects.html template
+
 @app.route('/login', methods=['POST'])
 def login_api():
     id_token = request.json.get('idToken')  # Get the ID token from the request
@@ -71,15 +77,15 @@ def logout():
 def ask_gpt():
     user_message = request.json.get('message')  # Get the user's message from the frontend
 
-# Create the message history (you can keep it dynamic if needed)
+    # Create the message history (you can keep it dynamic if needed)
     messages = [
         {"role": "system", "content": gpt_instructions},
         {"role": "user", "content": user_message}
     ]
 
-# Call OpenAI's API
+    # Call OpenAI's API
     response = client.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-3.5-turbo",
         messages=messages
     )
 
