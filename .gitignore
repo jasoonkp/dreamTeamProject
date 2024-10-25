@@ -6,3 +6,6 @@
 
 # Allow the .private directory itself to be tracked
 !.private/
+
+# Python development files
+__pycache__
