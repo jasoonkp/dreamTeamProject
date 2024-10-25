@@ -32,11 +32,11 @@
         signInSuccessUrl: "/",
         signInOptions: [
           firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-        //   firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-        //   firebase.auth.TwitterAuthProvider.PROVIDER_ID,
-        //   firebase.auth.GithubAuthProvider.PROVIDER_ID,
+          //   firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+          //   firebase.auth.TwitterAuthProvider.PROVIDER_ID,
+          //   firebase.auth.GithubAuthProvider.PROVIDER_ID,
           firebase.auth.EmailAuthProvider.PROVIDER_ID, // IMPORTANT: https://github.com/firebase/firebaseui-web/issues/1040
-        //   firebase.auth.PhoneAuthProvider.PROVIDER_ID,
+          //   firebase.auth.PhoneAuthProvider.PROVIDER_ID,
         ],
         // Set to false to disable account chooser
         credentialHelper: firebaseui.auth.CredentialHelper.NONE,
@@ -53,12 +53,31 @@
       };
       // Add the auth listener that fires when auth state changes
       auth.onAuthStateChanged((user) => {
+        console.log({ user });
         if (user) {
           // User is signed in.
-          console.log("User is signed in");
+          console.log("Firebase: User is signed in. Creating the session.");
+          user.getIdToken().then((idToken) => {
+            // Send the ID token to your Flask server
+            fetch("/login", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ idToken: idToken }),
+            }).then((response) => {
+              if (response.ok) {
+                // Handle successful login
+                console.log("Backend: Session started.");
+              } else {
+                // Handle login error
+                console.error("Backend: Unable to create session.");
+              }
+            });
+          });
         } else {
           // User is signed out.
-          console.log("User is signed out");
+          console.log("Firebase: User is signed out");
         }
       });
       // Sign-out function
@@ -66,9 +85,18 @@
         auth
           .signOut()
           .then(() => {
-            console.log("User signed out.");
-            // Optionally, redirect or update the UI after sign-out
-            window.location.reload(); // Reload the page or redirect
+            console.log("Firebase: User signed out.");
+            fetch("/logout", {
+              method: "GET",
+            }).then((response) => {
+              if (response.ok) {
+                console.log("Session: Logged out successfully.");
+                // Optionally, redirect or update the UI after logout
+                window.location.reload(); // Reload the page or redirect
+              } else {
+                console.error("Session: Failed to log out.");
+              }
+            });
           })
           .catch((error) => {
             console.error("Sign-out error:", error);
