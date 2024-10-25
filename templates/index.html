@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    
+
     <div class="chat-container">
         <aside class="sidebar">
             <h2>Tutor Bot</h2>
@@ -47,7 +47,7 @@
             const chatBox = document.getElementById('chat-box');
             userMessage.innerHTML += `<p><strong>You:</strong> ${userInput.value}</p>`;
             chatBox.appendChild(userMessage);
-            
+
             // Send the user input to the backend
             const response = await fetch('/ask', {
                 method: 'POST',
@@ -61,10 +61,10 @@
             // Add GPT response to the chat box
             botMessage.innerHTML += `<p><strong>Tutor:</strong> ${assistantMessage}</p>`;
             chatBox.appendChild(botMessage);
-            
+
             // Clear the input field
             document.getElementById('user-input').value = '';
-            
+
         }
     </script>
 </body>

@@ -1,0 +1,67 @@
+<!-- backend/templates/login.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <script type="module">
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyA6zpoyx3DPFTydwFUB11drJAiyfOWRwWA",
+          authDomain: "hackathonproject-89255.firebaseapp.com",
+          projectId: "hackathonproject-89255",
+          storageBucket: "hackathonproject-89255.appspot.com",
+          messagingSenderId: "414382919249",
+          appId: "1:414382919249:web:c06b40bb5cc309288c3270",
+        };
+
+        // Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        window.login = async () => {
+            const email = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const idToken = await userCredential.user.getIdToken();
+
+                console.log({userCredential})
+                console.log({idToken})
+
+                // Send the ID token to your Flask backend
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({ id_token: idToken }),
+                });
+
+                const data = await response.json();
+                console.log(data);
+                // Handle successful login (e.g., redirect to another page)
+            } catch (error) {
+                console.error("Login failed:", error);
+            }
+        }
+    </script>
+</head>
+<body>
+    <form onsubmit="event.preventDefault(); login();">
+        <div>
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" value="anasempai89@gmail.com" required />
+        </div>
+        <div>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" value="123456" required />
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
