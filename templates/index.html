@@ -52,7 +52,7 @@
             const response = await fetch('/ask', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: userInput })
+                body: JSON.stringify({ message: userInput.value })
             });
 
             const data = await response.json();

@@ -1,5 +1,3 @@
-
-
 /* Global reset */
 * {
     margin: 0;
@@ -25,7 +23,7 @@ body {
 
 /* Sidebar */
 .sidebar {
-    width: 15%;
+    width: 10%;
     background-color: #6a89a7;
     padding: 20px;
     display: flex;
