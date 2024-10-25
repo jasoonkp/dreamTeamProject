@@ -43,6 +43,8 @@ def home():
 @app.route("/login", methods=['GET'])
 def login():
     app.logger.info("login: User ID in session: %s", session.get('user_id'))
+    if 'user_id' in session:
+        return redirect(url_for('home'))
     return render_template("login.html")
 
 @app.route('/login', methods=['POST'])
@@ -84,6 +86,9 @@ def ask_gpt():
     assistant_response = response.choices[0].message.content
 
     return jsonify({"response": assistant_response})  # Return the assistant's response as JSON
+
+def is_logged_in():
+    return 'user_id' in session
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,71 +1,70 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat with</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
+{% extends "base.html" %}
 
+{% block title %}Chat with{% endblock %}
+
+{% block body%}
     <div class="chat-container">
         <aside class="sidebar">
             <h2>Tutor Bot</h2>
             <ul class="menu">
-                <li>New Chat</li>
-                <li>Settings</li>
+            <li>New Chat</li>
+            <li>Settings</li>
+            <li onclick="logout()">Logout</li>
             </ul>
         </aside>
         <!--outer container-->
         <div class="chat-content">
             <!--header-->
             <header class="header">
-                <h1>Tutor Bot Chat</h1>
+            <h1>Tutor Bot Chat</h1>
             </header>
             <!--where the chat should happen-->
             <div id="chat-box"></div>
             <div class="input-container">
-                <!--user text box input-->
-                <input type="text" id="user-input" placeholder="Type your message here..." autofocus>
-                <!--send button-->
-                <button class="send-btn" onclick="sendMessage()">Send</button>
+            <!--user text box input-->
+            <input
+                type="text"
+                id="user-input"
+                placeholder="Type your message here..."
+                autofocus
+            />
+            <!--send button-->
+            <button class="send-btn" onclick="sendMessage()">Send</button>
             </div>
         </div>
     </div>
 
     <script>
-        async function sendMessage() {
-            const userInput = document.getElementById('user-input');
-            const userMessage = document.createElement('div');
-            userMessage.className = 'user-message';
-            const botMessage = document.createElement('div');
-            botMessage.className = 'bot-message';
+    async function sendMessage() {
+        const userInput = document.getElementById("user-input");
+        const userMessage = document.createElement("div");
+        userMessage.className = "user-message";
+        const botMessage = document.createElement("div");
+        botMessage.className = "bot-message";
 
-            if (userInput === '') return;
+        if (userInput === "") return;
 
-            // Add user message to chat box
-            const chatBox = document.getElementById('chat-box');
-            userMessage.innerHTML += `<p><strong>You:</strong> ${userInput.value}</p>`;
-            chatBox.appendChild(userMessage);
+        // Add user message to chat box
+        const chatBox = document.getElementById("chat-box");
+        userMessage.innerHTML += `<p><strong>You:</strong> ${userInput.value}</p>`;
+        chatBox.appendChild(userMessage);
 
-            // Send the user input to the backend
-            const response = await fetch('/ask', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: userInput })
-            });
+        // Send the user input to the backend
+        const response = await fetch("/ask", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: userInput }),
+        });
 
-            const data = await response.json();
-            const assistantMessage = data.response;
+        const data = await response.json();
+        const assistantMessage = data.response;
 
-            // Add GPT response to the chat box
-            botMessage.innerHTML += `<p><strong>Tutor:</strong> ${assistantMessage}</p>`;
-            chatBox.appendChild(botMessage);
+        // Add GPT response to the chat box
+        botMessage.innerHTML += `<p><strong>Tutor:</strong> ${assistantMessage}</p>`;
+        chatBox.appendChild(botMessage);
 
-            // Clear the input field
-            document.getElementById('user-input').value = '';
-
-        }
+        // Clear the input field
+        document.getElementById("user-input").value = "";
+    }
     </script>
-</body>
-</html>
+{% endblock %}
