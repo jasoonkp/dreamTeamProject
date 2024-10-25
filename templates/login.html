@@ -5,20 +5,6 @@
 
 {% block head %}
 <script>
-    // Your web app's Firebase configuration
-    // const firebaseConfig = {
-    //   apiKey: "AIzaSyA6zpoyx3DPFTydwFUB11drJAiyfOWRwWA",
-    //   authDomain: "hackathonproject-89255.firebaseapp.com",
-    //   projectId: "hackathonproject-89255",
-    //   storageBucket: "hackathonproject-89255.appspot.com",
-    //   messagingSenderId: "414382919249",
-    //   appId: "1:414382919249:web:c06b40bb5cc309288c3270",
-    // };
-
-    // Initialize Firebase
-    // firebase.initializeApp(firebaseConfig);
-    // const auth = firebase.auth(); // Use firebase.auth() to initialize auth
-
     // FirebaseUI config.
     const uiConfig = {
       signInSuccessUrl: "/",
@@ -85,7 +71,6 @@
           }).then((response) => {
             if (response.ok) {
               console.log("Session: Logged out successfully.");
-              // Optionally, redirect or update the UI after logout
               window.location.reload(); // Reload the page or redirect
             } else {
               console.error("Session: Failed to log out.");
